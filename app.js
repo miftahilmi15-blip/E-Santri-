@@ -20,10 +20,7 @@ const userEmailSpan = document.getElementById('user-email');
 
 // ---- WAKTU SHOLAT ----
 function loadPrayerTimes() {
-  let latitude = -6.200000;
-  let longitude = 106.816666;
-
-  fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=11`)
+  fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11")
     .then(res => res.json())
     .then(data => {
       const times = data.data.timings;
