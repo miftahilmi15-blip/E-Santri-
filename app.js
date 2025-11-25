@@ -1,4 +1,6 @@
-// app.js - simple logic using Firebase compat SDK
+// app.js
+
+// Ambil elemen UI
 const authSection = document.getElementById('auth-section');
 const appSection = document.getElementById('app-section');
 const emailInput = document.getElementById('email');
@@ -15,8 +17,9 @@ const btnAbsen = document.getElementById('btn-absen');
 const btnClear = document.getElementById('btn-clear');
 const recordsDiv = document.getElementById('records');
 const userEmailSpan = document.getElementById('user-email');
+
+// ---- WAKTU SHOLAT ----
 function loadPrayerTimes() {
-  // Lokasi: Jakarta (ganti sesuai lokasi kamu)
   let latitude = -6.200000;
   let longitude = 106.816666;
 
@@ -35,87 +38,114 @@ function loadPrayerTimes() {
       `;
     })
     .catch(err => console.error("Error Waktu Sholat:", err));
-} 
+}
+
+
+// ---- LOGIN LISTENER (HANYA 1!) ----
 auth.onAuthStateChanged(user => {
   if (user) {
-    document.getElementById("auth-section").classList.add("hidden");
-    document.getElementById("app-section").classList.remove("hidden");
+    authSection.classList.add("hidden");
+    appSection.classList.remove("hidden");
 
-    loadPrayerTimes();
-    loadRecords();
+    userEmailSpan.textContent = user.email;
+
+    loadPrayerTimes();  // tampilkan waktu sholat
   } else {
-    document.getElementById("auth-section").classList.remove("hidden");
-    document.getElementById("app-section").classList.add("hidden");
+    authSection.classList.remove("hidden");
+    appSection.classList.add("hidden");
+    userEmailSpan.textContent = "";
   }
 });
+
+
+// ---- REGISTER ----
 btnRegister.onclick = async () => {
   const email = emailInput.value.trim();
   const pass = passInput.value.trim();
-  if (!email || !pass) return alert('Isi email & password untuk register');
+  if (!email || !pass) return alert("Isi email & password untuk register");
+
   try {
     await auth.createUserWithEmailAndPassword(email, pass);
-    alert('Registrasi berhasil. Silakan login.');
-  } catch(e){ alert('Gagal register: '+e.message); }
+    alert("Registrasi berhasil. Silakan login.");
+  } catch (e) {
+    alert("Gagal register: " + e.message);
+  }
 };
 
+
+// ---- LOGIN ----
 btnLogin.onclick = async () => {
   const email = emailInput.value.trim();
   const pass = passInput.value.trim();
-  if (!email || !pass) return alert('Isi email & password untuk login');
+  if (!email || !pass) return alert("Isi email & password untuk login");
+
   try {
     await auth.signInWithEmailAndPassword(email, pass);
-  } catch(e){ alert('Login gagal: '+e.message); }
+  } catch (e) {
+    alert("Login gagal: " + e.message);
+  }
 };
 
+
+// ---- LOGOUT ----
 btnLogout.onclick = async () => {
   await auth.signOut();
 };
 
+
+// ---- CLEAR INPUT ----
 btnClear.onclick = () => {
-  namaInput.value=''; kelasInput.value=''; kamarInput.value=''; statusSelect.value='Hadir';
+  namaInput.value = "";
+  kelasInput.value = "";
+  kamarInput.value = "";
+  statusSelect.value = "Hadir";
 };
 
+
+// ---- ABSEN ----
 btnAbsen.onclick = async () => {
   const nama = namaInput.value.trim();
   const kelas = kelasInput.value.trim();
   const kamar = kamarInput.value.trim();
   const status = statusSelect.value;
-  if (!nama || !kelas || !kamar) return alert('Lengkapi Nama, Kelas, Kamar.');
+
+  if (!nama || !kelas || !kamar)
+    return alert("Lengkapi Nama, Kelas, Kamar.");
+
   try {
-    await db.collection('attendance').add({
-      nama, kelas, kamar, status,
+    await db.collection("attendance").add({
+      nama,
+      kelas,
+      kamar,
+      status,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       user: auth.currentUser ? auth.currentUser.email : null
     });
-    alert('Absensi tersimpan.');
+
+    alert("Absensi tersimpan.");
     btnClear.click();
-  } catch(e){ alert('Gagal simpan: '+e.message); }
+  } catch (e) {
+    alert("Gagal simpan: " + e.message);
+  }
 };
 
-// Auth state
-auth.onAuthStateChanged(user => {
-  if (user) {
-    authSection.classList.add('hidden');
-    appSection.classList.remove('hidden');
-    userEmailSpan.textContent = user.email;
-  } else {
-    authSection.classList.remove('hidden');
-    appSection.classList.add('hidden');
-    userEmailSpan.textContent = '';
-  }
-});
 
-// Listen to attendance collection
-db.collection('attendance').orderBy('createdAt', 'desc').limit(100)
-.onSnapshot(snap => {
-  recordsDiv.innerHTML = '';
-  snap.forEach(doc => {
-    const d = doc.data();
-    const time = d.createdAt && d.createdAt.toDate ? d.createdAt.toDate().toLocaleString() : '-';
-    const div = document.createElement('div');
-    div.className = 'record';
-    div.innerHTML = '<div><strong>'+ (d.nama||'') +'</strong> - '+ (d.status||'') +'</div>'
-                  +'<div class="meta">Kelas: '+(d.kelas||'')+' • Kamar: '+(d.kamar||'')+' • '+time+'</div>';
-    recordsDiv.appendChild(div);
+// ---- REALTIME REKAP ----
+db.collection("attendance")
+  .orderBy("createdAt", "desc")
+  .limit(100)
+  .onSnapshot(snap => {
+    recordsDiv.innerHTML = "";
+    snap.forEach(doc => {
+      const d = doc.data();
+      const time = d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString() : "-";
+
+      const div = document.createElement("div");
+      div.className = "record";
+      div.innerHTML = `
+        <div><strong>${d.nama}</strong> - ${d.status}</div>
+        <div class="meta">Kelas: ${d.kelas} • Kamar: ${d.kamar} • ${time}</div>
+      `;
+      recordsDiv.appendChild(div);
+    });
   });
-});
