@@ -138,7 +138,8 @@ input:focus, select:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 140px; /* tinggi konsisten */
+  /** PERBAIKAN: Mengurangi tinggi bingkai/container */
+  height: 120px; 
 }
 
 .menu-item:hover {
@@ -148,10 +149,11 @@ input:focus, select:focus {
 }
 
 .menu-icon {
-  width: 60px;       /* ukuran konsisten */
-  height: 60px;
+  /** PERBAIKAN: Memperbesar ukuran ikon */
+  width: 75px;       
+  height: 75px;
   object-fit: contain;
-  margin-bottom: 8px;
+  margin-bottom: 4px; /* Mengurangi sedikit jarak dengan teks */
 }
 
 /* Hidden */
