@@ -12,7 +12,6 @@ body {
   padding: 20px;
 }
 
-/* Container */
 .container {
   max-width: 420px;
   margin: auto;
@@ -42,7 +41,138 @@ body {
   color: #888;
 }
 
-/* Responsive */
+@media (max-width: 480px) {
+  .header-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Cards */
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid #2e5e4e;
+}
+
+.card.small {
+  text-align: center;
+  padding: 12px;
+  font-size: 12px;
+}
+
+/* Input + Select */
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  transition: 0.2s ease;
+}
+
+input:focus, select:focus {
+  border-color: #2e5e4e;
+  background: #fff;
+  outline: none;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #d9d9d9;
+  transition: 0.2s;
+  width: 48%;
+}
+
+.btn:hover {
+  background: #bfbfbf;
+}
+
+.btn.primary {
+  background: #2e5e4e;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: #234a3d;
+}
+
+/* Layout row */
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+/* Dashboard Menu Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.menu-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+  border: 2px solid #2e5e4e;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;       /* tinggi sama semua */
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  background: #eefff3;
+}
+
+.menu-icon {
+  width: 80px;         /* ukuran sama semua */
+  height: 80px;
+  object-fit: contain;  /* proporsional */
+  margin-bottom: 8px;
+}
+
+/* Hidden */
+.hidden {
+  display: none;
+}
+
+/* Footer */
+footer small {
+  color: #666;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-top: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .btn { width: 100%; }
+  .row { flex-direction: column; }
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}/* Responsive */
 @media (max-width: 480px) {
   .header-box {
     flex-direction: column;
