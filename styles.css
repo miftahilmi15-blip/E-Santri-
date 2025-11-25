@@ -139,7 +139,7 @@ input:focus, select:focus {
   align-items: center;
   justify-content: center;
   /** PERBAIKAN: Mengurangi tinggi bingkai/container */
-  height: 120px; 
+  height: 90px; 
 }
 
 .menu-item:hover {
