@@ -5,36 +5,91 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>E-Santri</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- Firebase App (the core Firebase SDK) -->
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
-  <div class="container">
-<header class="header-box">
-  <img src="logo-assunnah.png" alt="Logo Assunnah Cirebon" class="logo">
-  <div>
-    <h1>E-Santri</h1>
-    <p class="tagline">Santri Tertib, Pesantren Berkah</p>
-  </div>
-</header>
 
-    <main>
-      <section id="auth-section" class="card">
-        <h2>Login / Register</h2>
-        <input id="email" placeholder="Email" type="email" />
-        <input id="password" placeholder="Password" type="password" />
-        <div class="row">
-          <button id="btn-login" class="btn primary">Login</button>
-          <button id="btn-register" class="btn">Register</button>
+  <header class="header-box">
+    <img src="logo-assunnah.png" alt="Logo Assunnah Cirebon" class="logo">
+    <div>
+      <h1 class="title">E-Santri</h1>
+      <p class="tagline">Santri Tertib, Pesantren Berkah</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- LOGIN SECTION -->
+    <section id="auth-section" class="card">
+      <h2>Login / Register</h2>
+      <input id="email" placeholder="Email" type="email" />
+      <input id="password" placeholder="Password" type="password" />
+      <div class="row">
+        <button id="btn-login" class="btn primary">Login</button>
+        <button id="btn-register" class="btn">Register</button>
+      </div>
+      <p class="note">Gunakan email & password untuk masuk.</p>
+    </section>
+
+
+    <!-- DASHBOARD MENU SECTION -->
+    <section id="app-section" class="hidden">
+
+      <div class="card small row between">
+        <strong id="user-email"></strong>
+        <button id="btn-logout" class="btn">Logout</button>
+      </div>
+
+      <section id="dashboard" class="menu-grid">
+
+        <div class="menu-item" onclick="location.href='absensi.html'">
+          <img src="icons/absensi.png" class="menu-icon" alt="Absensi">
+          <p>Absensi Santri</p>
         </div>
-        <p class="note">Gunakan email & password untuk masuk. Semua pengguna dapat melihat rekap.</p>
-      </section>
 
-      <section id="app-section" class="card hidden">
-        <div class="row between">
-          <div>
+        <div class="menu-item" onclick="location.href='tahfidz.html'">
+          <img src="icons/tahfidz.png" class="menu-icon" alt="Tahfidz">
+          <p>Pencapaian Tahfidz</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='sop.html'">
+          <img src="icons/sop.png" class="menu-icon" alt="SOP">
+          <p>SOP Santri</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='kaldik.html'">
+          <img src="icons/kaldik.png" class="menu-icon" alt="Kaldik">
+          <p>Kaldik Yayasan</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='izin.html'">
+          <img src="icons/izin.png" class="menu-icon" alt="Izin">
+          <p>Perizinan Santri</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='fitur.html'">
+          <img src="icons/fitur.png" class="menu-icon" alt="Lainnya">
+          <p>Fitur Lainnya</p>
+        </div>
+
+      </section>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <small>© 2025 E-Santri | Aplikasi Absensi Santri</small>
+  </footer>
+
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>          <div>
             <strong id="user-email"></strong>
           </div>
           <div>
