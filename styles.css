@@ -127,7 +127,7 @@ input:focus, select:focus {
 .menu-item {
   background: #ffffff;
   border-radius: 14px;
-  padding: 10px;               /* padding cukup */
+  padding: 8px;                 /* padding minimal agar gambar lebih besar */
   text-align: center;
   border: 2px solid #2e5e4e;
   cursor: pointer;
@@ -136,9 +136,9 @@ input:focus, select:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;      /* gambar & teks berada di tengah */
-  height: auto;                 /* tinggi menyesuaikan isi */
-  min-height: 140px;            /* tinggi minimal */
+  justify-content: center;       /* gambar & teks di tengah */
+  height: auto;                  /* tinggi menyesuaikan isi */
+  min-height: 130px;             /* minimal card lebih proporsional */
 }
 
 .menu-item:hover {
@@ -147,8 +147,8 @@ input:focus, select:focus {
 }
 
 .menu-icon {
-  width: 80px;                  /* ukuran sama semua */
-  height: 80px;
+  width: 90px;                    /* gambar lebih besar */
+  height: 90px;
   object-fit: contain;
   margin-bottom: 6px;
 }
@@ -168,13 +168,6 @@ footer small {
 }
 
 /* Mobile Responsive */
-@media (max-width: 480px) {
-  .btn { width: 100%; }
-  .row { flex-direction: column; }
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}/* Mobile Responsive */
 @media (max-width: 480px) {
   .btn { width: 100%; }
   .row { flex-direction: column; }
