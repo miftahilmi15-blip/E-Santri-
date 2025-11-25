@@ -24,28 +24,30 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .logo {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid #2e5e4e;
   background: #fff;
-  padding: 5px;
-}
-
-/* Biar tetap rapi di HP */
-@media (max-width: 480px) {
-  .header-box {
-    flex-direction: column;
-  }
+  padding: 6px;
 }
 
 .tagline {
   font-size: 13px;
   color: #888;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .header-box {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 /* Cards */
@@ -64,7 +66,7 @@ body {
   font-size: 12px;
 }
 
-/* Input */
+/* Input + Select */
 input, select {
   width: 100%;
   padding: 12px;
@@ -135,6 +137,36 @@ input:focus, select:focus {
   margin-top: 3px;
 }
 
+/* Dashboard Menu Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.menu-item {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  border: 2px solid #2e5e4e;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  background: #eefff3;
+}
+
+.menu-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
 /* Hidden */
 .hidden {
   display: none;
@@ -143,10 +175,17 @@ input:focus, select:focus {
 /* Footer */
 footer small {
   color: #666;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-top: 20px;
 }
 
-/* Mobile */
+/* Mobile Responsive */
 @media (max-width: 480px) {
   .btn { width: 100%; }
   .row { flex-direction: column; }
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
