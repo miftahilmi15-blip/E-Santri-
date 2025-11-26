@@ -21,24 +21,25 @@ body {
 .header-box {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 15px; /* jarak logo dan teks */
+  padding: 10px 20px;
 }
 
-.logo {
-  width: 65px;
-  height: 65px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #2e5e4e;
-  background: #fff;
-  padding: 6px;
+.header-box .logo {
+  width: 60px; /* sesuaikan ukuran logo */
+  height: 60px;
 }
 
-.tagline {
-  font-size: 13px;
-  color: #888;
+.header-box .title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.header-box .tagline {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  color: #666;
 }
 
 @media (max-width: 480px) {
