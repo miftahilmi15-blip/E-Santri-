@@ -139,7 +139,7 @@ input:focus, select:focus {
   align-items: center;
   justify-content: center;
   /* NILAI OPTIMAL: Tinggi bingkai disesuaikan untuk ikon 75px dan teks */
-  height: 120px; 
+  height: 100px; 
 }
 
 .menu-item:hover {
