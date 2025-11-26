@@ -20,13 +20,12 @@ body {
 /* ========== HEADER DENGAN LOGO BINGKAI ========== */
 .header-box {
   display: flex;
-  align-items: center;
+  align-items: center;      /* pastikan logo dan teks sejajar vertikal */
   gap: 15px;
   padding: 15px 20px;
-  flex-wrap: nowrap;          /* Pastikan tidak wrap ke bawah */
+  flex-wrap: nowrap;
 }
 
-/* Bingkai logo */
 .logo-box {
   width: 70px;                 
   height: 70px;
@@ -38,7 +37,7 @@ body {
   justify-content: center;
   background: #fff;            
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  flex-shrink: 0;              /* Jangan kecilkan logo */
+  flex-shrink: 0;
 }
 
 .logo {
@@ -47,11 +46,11 @@ body {
   object-fit: contain;
 }
 
-/* Teks header */
 .header-text {
   display: flex;
   flex-direction: column;
-  justify-content: center;     /* Vertikal sejajar dengan logo */
+  justify-content: center;      /* Vertikal sejajar dengan logo */
+  height: 70px;                 /* sama dengan tinggi logo-box */
 }
 
 .header-text .title {
@@ -62,7 +61,7 @@ body {
 }
 
 .header-text .tagline {
-  margin-top: 4px;
+  margin: 2px 0 0 0;
   font-size: 14px;
   color: #666;
 }
@@ -192,6 +191,11 @@ footer small {
     flex-direction: column;
     text-align: center;
     gap: 8px;
+  }
+
+  .header-text {
+    height: auto;              /* biar fleksibel di mobile */
+    justify-content: center;
   }
 
   .logo-box {
