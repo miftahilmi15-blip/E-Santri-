@@ -1,540 +1,258 @@
-     await user.updatePassword(newPass);
-    }
-
-    alert("Profil berhasil diperbarui!");
-
-    closeEdit();
-    location.reload();
-
-  } catch (err) {
-    alert("Gagal update: " + err.message);
-    }
-  };
-</script>
-<!-- POPUP EDIT PROFIL -->
-<div id="edit-profile-popup" class="overlay hidden">
-  <div class="popup-box">
-    <h2 style="margin-bottom:15px;">Edit Profil</h2>
-
-    <input type="text" id="edit-name" placeholder="Nama baru (opsional)">
-    <input type="email" id="edit-email" placeholder="Email baru (opsional)">
-    <input type="password" id="edit-pass" placeholder="Password baru (opsional)">
-
-    <button class="btn primary" style="margin-top:10px;" onclick="saveProfile()">Simpan</button>
-    <button class="btn secondary" onclick="closeEdit()">Batal</button>
-  </div>
-</div>
-</body>
-</html>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>E-Santri</title>
+  <meta charset="UTF-8">
+  <title>Dashboard Assunnah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
-  body{background:#f7f9fb;color:#333;padding:20px}
-  .container{max-width:460px;margin:auto}
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    .hidden { display: none; }
 
-  /* Header */
-  .header-box{display:flex;align-items:center;gap:15px;padding:15px 20px;border-bottom:1px solid #ccc}
-  .logo-box{width:70px;height:70px;padding:5px;border:2px solid #2e5e4e;border-radius:12px;display:flex;justify-content:center;align-items:center;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-  .logo{width:60px;height:60px;object-fit:contain}
-  .header-text .title{font-size:24px;font-weight:600;color:#2e5e4e}
-  .header-text .tagline{font-size:14px;color:#666;margin-top:4px}
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 12px 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header img { height: 40px; }
+    #menu-btn { font-size: 26px; cursor: pointer; }
 
-  /* Cards */
-  .card{background:#fff;border-radius:14px;padding:20px;margin:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.08);border-left:5px solid #2e5e4e}
-  input,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ddd;background:#fafafa}
-  input:focus{border-color:#2e5e4e;background:#fff;outline:none}
-  .btn{padding:12px;border:none;border-radius:10px;margin-top:5px;cursor:pointer}
-  .btn.primary{background:#2e5e4e;color:#fff}
-  .btn.primary:hover{background:#234a3d}
-  .btn.secondary{background:#d9d9d9}
-  .btn.secondary:hover{background:#bfbfbf}
-  .hidden{display:none}
+    /* LOGIN CARD */
+    #auth-section {
+      max-width: 330px;
+      margin: 60px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    input {
+      width: 100%; padding: 10px; margin-top: 8px;
+      border-radius: 6px; border: 1px solid #ccc;
+    }
+    button {
+      width: 100%; padding: 10px; margin-top: 12px;
+      background: #008cff; color: white;
+      border: none; border-radius: 6px;
+      cursor: pointer; font-size: 16px;
+    }
 
-  /* GRID MENU */
-  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
-  .menu-item{background:#fff;padding:15px;border-radius:14px;text-align:center;cursor:pointer;border:1px solid #e0e0e0;box-shadow:0 3px 12px rgba(0,0,0,.1)}
-  .menu-item:hover{transform:translateY(-4px);background:#f1f7f5}
-  .menu-icon{width:50px;height:50px;margin-bottom:8px;object-fit:contain}
+    /* DASHBOARD */
+    #dashboard {
+      padding: 20px;
+    }
+    .menu-box {
+      background: white;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
 
-  /* TOMBOL TITIK 3 */
-  .menu-trigger{
-    position:fixed;top:18px;right:18px;font-size:28px;
-    padding:6px 10px;background:#fff;border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,.15);cursor:pointer;z-index:1100;
-    display:none;
-  }
+    /* SIDEBAR */
+    #sidebar {
+      position: fixed;
+      top: 0; right: -260px;
+      width: 260px; height: 100%;
+      background: white;
+      box-shadow: -3px 0 6px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: 0.3s;
+      z-index: 20;
+    }
+    #sidebar.open { right: 0; }
 
-  /* SIDEBAR */
-  .sidebar{position:fixed;top:0;right:-80%;width:80%;height:100%;background:#fff;transition:.3s;z-index:1200;box-shadow:-2px 0 8px rgba(0,0,0,.2)}
-  .sidebar.open{right:0}
-  .sidebar-header{text-align:center;padding:20px}
-  .close-btn{font-size:28px;cursor:pointer;float:right}
-  .avatar{width:80px;height:80px;border-radius:50%}
-  .sidebar-menu a{padding:12px 20px;display:block;border-bottom:1px solid #eee;color:#333;text-decoration:none}
-  .sidebar-menu a:hover{background:#f5f5f5}
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 15;
+    }
+    #overlay.show { display: block; }
 
-  /* OVERLAY */
-  .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:1100}
-  .overlay.show{display:block}
+    /* EDIT PROFIL POPUP */
+    #edit-popup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      width: 300px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 30;
+    }
+    #edit-popup input { margin-bottom: 10px; }
 
-  /* POPUP EDIT */
-  #edit-profile-popup{position:fixed;top:0;left:0;width:100%;height:100%;display:none;background:rgba(0,0,0,.5);z-index:2000;justify-content:center;align-items:center}
-  #edit-profile-popup.show{display:flex}
-  .popup-box{background:#fff;padding:25px;border-radius:15px;width:85%;max-width:350px;box-shadow:0 4px 15px rgba(0,0,0,.3)}
-</style>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  </style>
 </head>
-
 <body>
 
-<!-- TITIK TIGA -->
-<div class="menu-trigger" id="menu-btn">&#x22EE;</div>
+  <!-- HEADER -->
+  <header>
+    <img src="logo-assunnah.png" alt="Logo">
+    <div id="menu-btn">⋮</div>
+  </header>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <span id="close-btn" class="close-btn">&times;</span>
+  <!-- LOGIN SECTION -->
+  <div id="auth-section">
+    <h3>Login</h3>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
 
-    <img src="https://via.placeholder.com/80" class="avatar">
-
-    <div class="user-name" id="sidebar-name">Pengguna</div>
-    <small id="sidebar-email"></small>
+    <button id="btn-login">Login</button>
+    <button id="btn-register" style="background:#555;">Register</button>
   </div>
-
-  <div class="sidebar-menu">
-    <a href="index.html">Dashboard</a>
-    <a href="#" onclick="openEdit()">Edit Profil</a>
-    <hr>
-    <a href="#">Tentang</a>
-    <a href="#">Kebijakan</a>
-    <hr>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<header class="header-box">
-  <div class="logo-box"><img src="logo-assunnah.png" class="logo"></div>
-  <div class="header-text">
-    <h1 class="title">E-Santri</h1>
-    <p class="tagline">Berpegang teguh pada Al-Quran dan Hadist</p>
-  </div>
-</header>
-
-<main class="container">
-
-  <!-- LOGIN -->
-  <section id="login-card" class="card">
-    <h2>Login / Daftar</h2>
-
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-
-    <button class="btn primary" onclick="login()">Login</button>
-    <button class="btn secondary" onclick="register()">Daftar</button>
-
-    <p id="msg" style="color:red;margin-top:10px"></p>
-  </section>
 
   <!-- DASHBOARD -->
-  <section id="dashboard" class="hidden">
-    <div class="menu-grid">
+  <div id="app-section" class="hidden">
+    <div id="dashboard">
+      <h2>Dashboard</h2>
 
-      <div class="menu-item" onclick="goTo('absensi.html')">
-        <img src="icons/absensi.png" class="menu-icon"><span>Absensi Santri</span>
-      </div>
-
-      <div class="menu-item" onclick="goTo('tahfidz.html')">
-        <img src="icons/tahfidz.png" class="menu-icon"><span>Tahfidz</span>
-      </div>
-
-      <div class="menu-item" onclick="goTo('sop.html')">
-        <img src="icons/sop.png" class="menu-icon"><span>SOP Santri</span>
-      </div>
-
-      <div class="menu-item" onclick="goTo('kalender.html')">
-        <img src="icons/kalender.png" class="menu-icon"><span>Kaldik Yayasan</span>
-      </div>
-
-      <div class="menu-item" onclick="goTo('izin.html')">
-        <img src="icons/izin.png" class="menu-icon"><span>Perizinan Santri</span>
-      </div>
-
-      <div class="menu-item" onclick="goTo('ibadah.html')">
-        <img src="icons/ibadah.png" class="menu-icon"><span>Ibadah</span>
-      </div>
-
+      <div class="menu-box">📚 Data Santri</div>
+      <div class="menu-box">👨‍🏫 Data Pengajar</div>
+      <div class="menu-box">📅 Jadwal Kelas</div>
+      <div class="menu-box">📊 Rekap Nilai</div>
     </div>
-  </section>
-
-</main>
-
-<footer>
-  <small>© 2025 E-Santri</small>
-</footer>
-
-<!-- POPUP EDIT PROFIL -->
-<div id="edit-profile-popup">
-  <div class="popup-box">
-    <h2>Edit Profil</h2>
-    <input type="text" id="edit-name" placeholder="Nama baru">
-    <input type="email" id="edit-email" placeholder="Email baru">
-    <input type="password" id="edit-pass" placeholder="Password baru">
-    <button class="btn primary" onclick="saveProfile()">Simpan</button>
-    <button class="btn secondary" onclick="closeEdit()">Batal</button>
-  </div>
-</div>
-
-<script>
-  /* FIREBASE */
-  firebase.initializeApp({
-    apiKey:"AIzaSyAQ1A9rtEoEYoriA5Y7oSB84Fd1Xnu6aes",
-    authDomain:"e-santri-ed555.firebaseapp.com",
-    projectId:"e-santri-ed555"
-  });
-
-  const auth = firebase.auth();
-
-  /* LOGIN */
-  function login(){
-    const email=document.getElementById("email").value;
-    const pass=document.getElementById("password").value;
-
-    auth.signInWithEmailAndPassword(email,pass)
-      .catch(e=>msg(e.message));
-  }
-
-  function register(){
-    const email=document.getElementById("email").value;
-    const pass=document.getElementById("password").value;
-
-    auth.createUserWithEmailAndPassword(email,pass)
-      .then(()=>msg("Akun berhasil dibuat, silakan login"))
-      .catch(e=>msg(e.message));
-  }
-
-  function msg(t){document.getElementById("msg").innerHTML=t}
-
-  function logout(){auth.signOut()}
-
-  /* AUTH LISTENER */
-  auth.onAuthStateChanged(user=>{
-    if(user){
-      document.getElementById("login-card").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("menu-btn").style.display="block";
-
-      document.getElementById("sidebar-name").innerHTML=user.displayName || "Pengguna";
-      document.getElementById("sidebar-email").innerHTML=user.email;
-    }else{
-      document.getElementById("login-card").classList.remove("hidden");
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("menu-btn").style.display="none";
-    }
-  });
-
-  function goTo(x){window.location=x}
-
-  /* SIDEBAR */
-  const sidebar=document.getElementById("sidebar");
-  const overlay=document.getElementById("overlay");
-  const menuBtn=document.getElementById("menu-btn");
-  const closeBtn=document.getElementById("close-btn");
-
-  menuBtn.onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};
-  closeBtn.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
-  overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
-
-  /* EDIT PROFIL */
-  function openEdit(){document.getElementById("edit-profile-popup").classList.add("show")}
-  function closeEdit(){document.getElementById("edit-profile-popup").classList.remove("show")}
-
-  async function saveProfile(){
-    const user=auth.currentUser;
-    if(!user) return alert("Tidak ada user login");
-
-    const name=document.getElementById("edit-name").value.trim();
-    const email=document.getElementById("edit-email").value.trim();
-    const pass=document.getElementById("edit-pass").value.trim();
-
-    try{
-      if(name) await user.updateProfile({displayName:name});
-      if(email) await user.updateEmail(email);
-      if(pass) await user.updatePassword(pass);
-
-      alert("Profil berhasil diperbarui!");
-      closeEdit();
-      location.reload();
-    }catch(e){
-      alert("Gagal update: "+e.message);
-    }
-  }
-</script>
-
-</body>
-</html>
-<!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>E-Santri</title>
-
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
-  body{background:#f7f9fb;color:#333;padding:20px}
-  .container{max-width:460px;margin:auto}
-
-  /* Header */
-  .header-box{display:flex;align-items:center;gap:15px;padding:15px 20px;border-bottom:1px solid #ccc}
-  .logo-box{width:70px;height:70px;padding:5px;border:2px solid #2e5e4e;border-radius:12px;display:flex;justify-content:center;align-items:center;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-  .logo{width:60px;height:60px;object-fit:contain}
-  .header-text .title{font-size:24px;font-weight:600;color:#2e5e4e}
-  .header-text .tagline{font-size:14px;color:#666;margin-top:4px}
-
-  /* Cards */
-  .card{background:#fff;border-radius:14px;padding:20px;margin:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.08);border-left:5px solid #2e5e4e}
-  input,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ddd;background:#fafafa}
-  input:focus{border-color:#2e5e4e;background:#fff;outline:none}
-  .btn{padding:12px;border:none;border-radius:10px;margin-top:5px;cursor:pointer}
-  .btn.primary{background:#2e5e4e;color:#fff}
-  .btn.primary:hover{background:#234a3d}
-  .btn.secondary{background:#d9d9d9}
-  .btn.secondary:hover{background:#bfbfbf}
-  .hidden{display:none}
-
-  /* GRID MENU */
-  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
-  .menu-item{background:#fff;padding:15px;border-radius:14px;text-align:center;cursor:pointer;border:1px solid #e0e0e0;box-shadow:0 3px 12px rgba(0,0,0,.1)}
-  .menu-item:hover{transform:translateY(-4px);background:#f1f7f5}
-  .menu-icon{width:50px;height:50px;margin-bottom:8px;object-fit:contain}
-
-  /* TOMBOL TITIK 3 */
-  .menu-trigger{
-    position:fixed;top:18px;right:18px;font-size:28px;
-    padding:6px 10px;background:#fff;border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,.15);cursor:pointer;z-index:1100;
-    display:none;
-  }
-
-  /* SIDEBAR */
-  .sidebar{position:fixed;top:0;right:-80%;width:80%;height:100%;background:#fff;transition:.3s;z-index:1200;box-shadow:-2px 0 8px rgba(0,0,0,.2)}
-  .sidebar.open{right:0}
-  .sidebar-header{text-align:center;padding:20px}
-  .close-btn{font-size:28px;cursor:pointer;float:right}
-  .avatar{width:80px;height:80px;border-radius:50%}
-  .sidebar-menu a{padding:12px 20px;display:block;border-bottom:1px solid #eee;color:#333;text-decoration:none}
-  .sidebar-menu a:hover{background:#f5f5f5}
-
-  /* OVERLAY */
-  .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:1100}
-  .overlay.show{display:block}
-
-  /* POPUP EDIT */
-  #edit-profile-popup{position:fixed;top:0;left:0;width:100%;height:100%;display:none;background:rgba(0,0,0,.5);z-index:2000;justify-content:center;align-items:center}
-  #edit-profile-popup.show{display:flex}
-  .popup-box{background:#fff;padding:25px;border-radius:15px;width:85%;max-width:350px;box-shadow:0 4px 15px rgba(0,0,0,.3)}
-</style>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-</head>
-
-<body>
-
-<!-- TITIK TIGA -->
-<div class="menu-trigger" id="menu-btn">&#x22EE;</div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <span id="close-btn" class="close-btn">&times;</span>
-
-    <img src="https://via.placeholder.com/80" class="avatar">
-
-    <div class="user-name" id="sidebar-name">Pengguna</div>
-    <small id="sidebar-email"></small>
   </div>
 
-  <div class="sidebar-menu">
-    <a href="index.html">Dashboard</a>
-    <a href="#" onclick="openEdit()">Edit Profil</a>
-    <hr>
-    <a href="#">Tentang</a>
-    <a href="#">Kebijakan</a>
-    <hr>
-    <a href="#" onclick="logout()">Logout</a>
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <h3>Menu</h3>
+    <p style="font-size:14px;color:#555;">Login sebagai:</p>
+    <p id="user-email" style="font-weight:bold;"></p>
+
+    <button id="btn-edit-profile" style="background:#ffa600;margin-top:20px;">Edit Profil</button>
+    <button id="btn-logout" style="background:#ff3b3b;">Logout</button>
+    <button id="close-btn" style="background:#777;margin-top:20px;">Tutup</button>
   </div>
-</div>
 
-<div class="overlay" id="overlay"></div>
+  <div id="overlay"></div>
 
-<header class="header-box">
-  <div class="logo-box"><img src="logo-assunnah.png" class="logo"></div>
-  <div class="header-text">
-    <h1 class="title">E-Santri</h1>
-    <p class="tagline">Berpegang teguh pada Al-Quran dan Hadist</p>
+  <!-- POPUP EDIT PROFIL -->
+  <div id="edit-popup">
+    <h3>Edit Profil</h3>
+    <input id="edit-email" type="email" placeholder="Email baru">
+    <input id="edit-password" type="password" placeholder="Password baru (opsional)">
+    <button id="save-edit">Simpan</button>
+    <button id="cancel-edit" style="background:#999;">Batal</button>
   </div>
-</header>
 
-<main class="container">
 
-  <!-- LOGIN -->
-  <section id="login-card" class="card">
-    <h2>Login / Daftar</h2>
+  <script type="module">
+    // Firebase Config
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+             createUserWithEmailAndPassword, signOut,
+             updateEmail, updatePassword } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+    const firebaseConfig = {
+      apiKey: "ISI_API_KEY",
+      authDomain: "ISI_DOMAIN",
+      projectId: "ISI_PROJECT",
+      storageBucket: "ISI_BUCKET",
+      messagingSenderId: "ISI_SENDER",
+      appId: "ISI_APPID"
+    };
 
-    <button class="btn primary" onclick="login()">Login</button>
-    <button class="btn secondary" onclick="register()">Daftar</button>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
 
-    <p id="msg" style="color:red;margin-top:10px"></p>
-  </section>
+    const authSection = document.getElementById("auth-section");
+    const appSection  = document.getElementById("app-section");
+    const userEmailSpan = document.getElementById("user-email");
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="hidden">
-    <div class="menu-grid">
+    const menuBtn = document.getElementById("menu-btn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("close-btn");
 
-      <div class="menu-item" onclick="goTo('absensi.html')">
-        <img src="icons/absensi.png" class="menu-icon"><span>Absensi Santri</span>
-      </div>
+    const btnLogin = document.getElementById("btn-login");
+    const btnRegister = document.getElementById("btn-register");
+    const btnLogout = document.getElementById("btn-logout");
+    const btnEdit = document.getElementById("btn-edit-profile");
 
-      <div class="menu-item" onclick="goTo('tahfidz.html')">
-        <img src="icons/tahfidz.png" class="menu-icon"><span>Tahfidz</span>
-      </div>
+    const popup = document.getElementById("edit-popup");
+    const saveEdit = document.getElementById("save-edit");
+    const cancelEdit = document.getElementById("cancel-edit");
 
-      <div class="menu-item" onclick="goTo('sop.html')">
-        <img src="icons/sop.png" class="menu-icon"><span>SOP Santri</span>
-      </div>
+    // Sidebar controls
+    menuBtn.onclick = () => {
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
+    };
+    closeBtn.onclick = overlay.onclick = () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    };
 
-      <div class="menu-item" onclick="goTo('kalender.html')">
-        <img src="icons/kalender.png" class="menu-icon"><span>Kaldik Yayasan</span>
-      </div>
+    // Login listener
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        authSection.classList.add("hidden");
+        appSection.classList.remove("hidden");
+        userEmailSpan.textContent = user.email;
+      } else {
+        authSection.classList.remove("hidden");
+        appSection.classList.add("hidden");
+      }
+    });
 
-      <div class="menu-item" onclick="goTo('izin.html')">
-        <img src="icons/izin.png" class="menu-icon"><span>Perizinan Santri</span>
-      </div>
+    btnRegister.onclick = async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        alert("Registrasi berhasil.");
+      } catch (e) { alert(e.message); }
+    };
 
-      <div class="menu-item" onclick="goTo('ibadah.html')">
-        <img src="icons/ibadah.png" class="menu-icon"><span>Ibadah</span>
-      </div>
+    btnLogin.onclick = async () => {
+      try {
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+      } catch (e) { alert(e.message); }
+    };
 
-    </div>
-  </section>
+    btnLogout.onclick = () => signOut(auth);
 
-</main>
+    // Edit Profil
+    btnEdit.onclick = () => {
+      popup.style.display = "block";
+      edit-email.value = auth.currentUser.email;
+    };
+    cancelEdit.onclick = () => popup.style.display = "none";
 
-<footer>
-  <small>© 2025 E-Santri</small>
-</footer>
+    saveEdit.onclick = async () => {
+      const user = auth.currentUser;
 
-<!-- POPUP EDIT PROFIL -->
-<div id="edit-profile-popup">
-  <div class="popup-box">
-    <h2>Edit Profil</h2>
-    <input type="text" id="edit-name" placeholder="Nama baru">
-    <input type="email" id="edit-email" placeholder="Email baru">
-    <input type="password" id="edit-pass" placeholder="Password baru">
-    <button class="btn primary" onclick="saveProfile()">Simpan</button>
-    <button class="btn secondary" onclick="closeEdit()">Batal</button>
-  </div>
-</div>
+      try {
+        if (edit-email.value.trim() !== "")
+          await updateEmail(user, edit-email.value.trim());
 
-<script>
-  /* FIREBASE */
-  firebase.initializeApp({
-    apiKey:"AIzaSyAQ1A9rtEoEYoriA5Y7oSB84Fd1Xnu6aes",
-    authDomain:"e-santri-ed555.firebaseapp.com",
-    projectId:"e-santri-ed555"
-  });
+        if (edit-password.value.trim() !== "")
+          await updatePassword(user, edit-password.value.trim());
 
-  const auth = firebase.auth();
+        alert("Profil berhasil diubah!");
+        popup.style.display = "none";
 
-  /* LOGIN */
-  function login(){
-    const email=document.getElementById("email").value;
-    const pass=document.getElementById("password").value;
+      } catch (e) {
+        alert("Gagal: " + e.message);
+      }
+    };
 
-    auth.signInWithEmailAndPassword(email,pass)
-      .catch(e=>msg(e.message));
-  }
-
-  function register(){
-    const email=document.getElementById("email").value;
-    const pass=document.getElementById("password").value;
-
-    auth.createUserWithEmailAndPassword(email,pass)
-      .then(()=>msg("Akun berhasil dibuat, silakan login"))
-      .catch(e=>msg(e.message));
-  }
-
-  function msg(t){document.getElementById("msg").innerHTML=t}
-
-  function logout(){auth.signOut()}
-
-  /* AUTH LISTENER */
-  auth.onAuthStateChanged(user=>{
-    if(user){
-      document.getElementById("login-card").classList.add("hidden");
-      document.getElementById("dashboard").classList.remove("hidden");
-      document.getElementById("menu-btn").style.display="block";
-
-      document.getElementById("sidebar-name").innerHTML=user.displayName || "Pengguna";
-      document.getElementById("sidebar-email").innerHTML=user.email;
-    }else{
-      document.getElementById("login-card").classList.remove("hidden");
-      document.getElementById("dashboard").classList.add("hidden");
-      document.getElementById("menu-btn").style.display="none";
-    }
-  });
-
-  function goTo(x){window.location=x}
-
-  /* SIDEBAR */
-  const sidebar=document.getElementById("sidebar");
-  const overlay=document.getElementById("overlay");
-  const menuBtn=document.getElementById("menu-btn");
-  const closeBtn=document.getElementById("close-btn");
-
-  menuBtn.onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};
-  closeBtn.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
-  overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
-
-  /* EDIT PROFIL */
-  function openEdit(){document.getElementById("edit-profile-popup").classList.add("show")}
-  function closeEdit(){document.getElementById("edit-profile-popup").classList.remove("show")}
-
-  async function saveProfile(){
-    const user=auth.currentUser;
-    if(!user) return alert("Tidak ada user login");
-
-    const name=document.getElementById("edit-name").value.trim();
-    const email=document.getElementById("edit-email").value.trim();
-    const pass=document.getElementById("edit-pass").value.trim();
-
-    try{
-      if(name) await user.updateProfile({displayName:name});
-      if(email) await user.updateEmail(email);
-      if(pass) await user.updatePassword(pass);
-
-      alert("Profil berhasil diperbarui!");
-      closeEdit();
-      location.reload();
-    }catch(e){
-      alert("Gagal update: "+e.message);
-    }
-  }
-</script>
+  </script>
 
 </body>
 </html>
