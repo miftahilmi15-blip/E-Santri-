@@ -316,19 +316,7 @@
 
       // tampilkan tombol titik-tiga
       document.getElementById("menu-btn").style.display = "block";
-     <!-- POPUP EDIT PROFIL -->
-<div id="edit-profile-popup" class="overlay hidden">
-  <div class="popup-box">
-    <h2 style="margin-bottom:15px;">Edit Profil</h2>
-
-    <input type="text" id="edit-name" placeholder="Nama baru (opsional)">
-    <input type="email" id="edit-email" placeholder="Email baru (opsional)">
-    <input type="password" id="edit-pass" placeholder="Password baru (opsional)">
-
-    <button class="btn primary" style="margin-top:10px;" onclick="saveProfile()">Simpan</button>
-    <button class="btn secondary" onclick="closeEdit()">Batal</button>
-  </div>
-</div>
+  
 
       // isi sidebar
       document.getElementById("sidebar-name").innerHTML = user.displayName || "Pengguna";
@@ -368,6 +356,18 @@
     overlay.classList.remove("show");
   };
 </script>
+<!-- POPUP EDIT PROFIL -->
+<div id="edit-profile-popup" class="overlay hidden">
+  <div class="popup-box">
+    <h2 style="margin-bottom:15px;">Edit Profil</h2>
 
+    <input type="text" id="edit-name" placeholder="Nama baru (opsional)">
+    <input type="email" id="edit-email" placeholder="Email baru (opsional)">
+    <input type="password" id="edit-pass" placeholder="Password baru (opsional)">
+
+    <button class="btn primary" style="margin-top:10px;" onclick="saveProfile()">Simpan</button>
+    <button class="btn secondary" onclick="closeEdit()">Batal</button>
+  </div>
+</div>
 </body>
 </html>
