@@ -1,3 +1,4 @@
+<style>
 /* ========== GLOBAL ========== */
 * {
   margin: 0;
@@ -20,7 +21,7 @@ body {
 /* ========== HEADER ========== */
 .header-box {
   display: flex;
-  align-items: center; /* vertikal sejajar */
+  align-items: center; 
   gap: 15px;
   padding: 15px 20px;
   border-bottom: 1px solid #ccc;
@@ -49,7 +50,7 @@ body {
 .header-text {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* vertikal sejajar logo */
+  justify-content: center;
 }
 
 .header-text .title {
@@ -121,21 +122,17 @@ input:focus, select:focus {
   background: #234a3d;
 }
 
-/* ========== LAYOUT FLEX ========== */
+/* ========== FLEX ========== */
 .row {
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.between {
-  justify-content: space-between;
-}
-
-/* ========== DASHBOARD MENU GRID ========== */
+/* ========== DASHBOARD MENU ========== */
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   margin-top: 20px;
 }
@@ -180,7 +177,7 @@ footer small {
   margin-top: 20px;
 }
 
-/* ========== RESPONSIVE MOBILE ========== */
+/* ========== RESPONSIVE ========== */
 @media (max-width:480px) {
   .header-box {
     flex-direction: column;
@@ -190,5 +187,6 @@ footer small {
   .logo-box { margin-bottom: 5px; }
   .btn { width: 100%; }
   .row { flex-direction: column; }
-  .menu-grid { grid-template-columns: repeat(2, 1fr); }
+  .menu-grid { grid-template-columns: repeat(2,1fr); }
 }
+</style>
