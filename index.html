@@ -75,12 +75,51 @@
   </section>
 
   <!-- DASHBOARD -->
-  <section id="dashboard" class="hidden">
+<!-- DASHBOARD (Tampilan Setelah Login) -->
+<section id="dashboard" class="hidden">
+
+    <!-- Card Email + Logout -->
     <div class="card small">
-      <strong id="user-email"></strong><br>
+      <strong id="user-email"></strong><br><br>
       <button class="btn secondary" onclick="logout()">Logout</button>
     </div>
-  </section>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid">
+
+      <div class="menu-item" onclick="alert('Absensi Santri')">
+        <img src="absensi.png" class="menu-icon">
+        <span>Absensi Santri</span>
+      </div>
+
+      <div class="menu-item" onclick="alert('Tahfidz')">
+        <img src="tahfidz.png" class="menu-icon">
+        <span>Tahfidz</span>
+      </div>
+
+      <div class="menu-item" onclick="alert('SOP Santri')">
+        <img src="sop.png" class="menu-icon">
+        <span>SOP Santri</span>
+      </div>
+
+      <div class="menu-item" onclick="alert('Kalender Pendidikan')">
+        <img src="kalender.png" class="menu-icon">
+        <span>Kaldik Yayasan</span>
+      </div>
+
+      <div class="menu-item" onclick="alert('Perizinan Santri')">
+        <img src="izin.png" class="menu-icon">
+        <span>Perizinan Santri</span>
+      </div>
+
+      <div class="menu-item" onclick="alert('Fitur Lainnya')">
+        <img src="fitur.png" class="menu-icon">
+        <span>Fitur Lainnya</span>
+      </div>
+
+    </div>
+
+</section>
 
 </main>
 
