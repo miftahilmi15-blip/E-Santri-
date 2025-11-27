@@ -6,7 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+
     .hidden { display: none; }
 
     /* HEADER */
@@ -21,8 +26,14 @@
       top: 0;
       z-index: 10;
     }
+
     header img { height: 40px; }
-    #menu-btn { font-size: 26px; cursor: pointer; display:none; }
+
+    #menu-btn {
+      font-size: 26px;
+      cursor: pointer;
+      display: none;
+    }
 
     /* LOGIN CARD */
     #auth-section {
@@ -33,21 +44,32 @@
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
     input {
-      width: 100%; padding: 10px; margin-top: 8px;
-      border-radius: 6px; border: 1px solid #ccc;
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
+
     button {
-      width: 100%; padding: 10px; margin-top: 12px;
-      background: #008cff; color: white;
-      border: none; border-radius: 6px;
-      cursor: pointer; font-size: 16px;
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      background: #008cff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
     }
 
     /* DASHBOARD */
     #dashboard {
       padding: 20px;
     }
+
     .menu-box {
       background: white;
       padding: 15px;
@@ -63,26 +85,31 @@
     /* SIDEBAR */
     #sidebar {
       position: fixed;
-      top: 0; right: -260px;
-      width: 260px; height: 100%;
+      top: 0;
+      right: -260px;
+      width: 260px;
+      height: 100%;
       background: white;
       box-shadow: -3px 0 6px rgba(0,0,0,0.2);
       padding: 20px;
       transition: 0.3s;
       z-index: 20;
     }
+
     #sidebar.open { right: 0; }
 
     #overlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
       background: rgba(0,0,0,0.4);
       display: none;
       z-index: 15;
     }
+
     #overlay.show { display: block; }
 
-    /* EDIT PROFIL POPUP */
+    /* EDIT PROFILE POPUP */
     #edit-popup {
       position: fixed;
       top: 50%; left: 50%;
@@ -95,8 +122,10 @@
       display: none;
       z-index: 30;
     }
-    #edit-popup input { margin-bottom: 10px; }
 
+    #edit-popup input {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +161,7 @@
   <!-- SIDEBAR -->
   <div id="sidebar">
     <h3>Menu</h3>
+
     <p style="font-size:14px;color:#555;">Login sebagai:</p>
     <p id="user-email" style="font-weight:bold;"></p>
 
@@ -142,7 +172,7 @@
 
   <div id="overlay"></div>
 
-  <!-- POPUP EDIT PROFIL -->
+  <!-- EDIT PROFILE POPUP -->
   <div id="edit-popup">
     <h3>Edit Profil</h3>
     <input id="editEmail" type="email" placeholder="Email baru">
@@ -151,15 +181,24 @@
     <button id="cancel-edit" style="background:#999;">Batal</button>
   </div>
 
-
+  <!-- SCRIPT -->
   <script type="module">
-    // Firebase Config
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword,
-             createUserWithEmailAndPassword, signOut,
-             updateEmail, updatePassword } 
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // Firebase Import
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut,
+      updateEmail,
+      updatePassword
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "ISI_API_KEY",
       authDomain: "ISI_DOMAIN",
@@ -172,9 +211,9 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
 
-    // DOM
+    // DOM Elements
     const authSection = document.getElementById("auth-section");
-    const appSection  = document.getElementById("app-section");
+    const appSection = document.getElementById("app-section");
     const userEmailSpan = document.getElementById("user-email");
 
     const menuBtn = document.getElementById("menu-btn");
@@ -193,25 +232,24 @@
     const saveEdit = document.getElementById("save-edit");
     const cancelEdit = document.getElementById("cancel-edit");
 
-    // Sidebar control
+    // Sidebar toggle
     menuBtn.onclick = () => {
       sidebar.classList.add("open");
       overlay.classList.add("show");
     };
+
     closeBtn.onclick = overlay.onclick = () => {
       sidebar.classList.remove("open");
       overlay.classList.remove("show");
     };
 
-    // Auth state
+    // Auth State Listener
     onAuthStateChanged(auth, user => {
       if (user) {
         authSection.classList.add("hidden");
         appSection.classList.remove("hidden");
 
         userEmailSpan.textContent = user.email;
-
-        // tampilkan titik tiga
         menuBtn.style.display = "block";
 
       } else {
@@ -227,20 +265,24 @@
       try {
         await createUserWithEmailAndPassword(auth, email.value, password.value);
         alert("Registrasi berhasil!");
-      } catch (e) { alert(e.message); }
+      } catch (e) {
+        alert(e.message);
+      }
     };
 
     // Login
     btnLogin.onclick = async () => {
       try {
         await signInWithEmailAndPassword(auth, email.value, password.value);
-      } catch (e) { alert(e.message); }
+      } catch (e) {
+        alert(e.message);
+      }
     };
 
     // Logout
     btnLogout.onclick = () => signOut(auth);
 
-    // Edit Profil open
+    // Open Edit Popup
     btnEdit.onclick = () => {
       popup.style.display = "block";
       editEmail.value = auth.currentUser.email;
@@ -248,7 +290,7 @@
 
     cancelEdit.onclick = () => popup.style.display = "none";
 
-    // Save Edit
+    // Save Updated Profile
     saveEdit.onclick = async () => {
       const user = auth.currentUser;
 
@@ -266,8 +308,6 @@
         alert("Gagal: " + e.message);
       }
     };
-
   </script>
-
 </body>
 </html>
