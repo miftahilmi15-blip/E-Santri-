@@ -44,8 +44,13 @@ const userPhotoEl = document.getElementById("user-photo");
 
 auth.onAuthStateChanged(user => {
   if (user) {
-    authSection.classList.add("hidden");
-    appSection.classList.remove("hidden");
+    authSection.classList.add("hidden");    // sembunyikan login
+    appSection.classList.remove("hidden");  // tampilkan dashboard
+  } else {
+    authSection.classList.remove("hidden"); 
+    appSection.classList.add("hidden");    
+  }
+});
 
     // Tampilkan email
     userEmailSpan.textContent = user.email;
