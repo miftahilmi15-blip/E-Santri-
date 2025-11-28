@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalender E-Santri</title>
+<style>
+  body{font-family:"Poppins",sans-serif;background:#f7f9fb;color:#333;margin:0;padding:0}
+  header{background:#2e5e4e;color:#fff;padding:15px;text-align:center}
+  h1{margin:0;font-size:24px}
+  main{max-width:800px;margin:20px auto;padding:0 15px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  th,td{padding:12px;text-align:left;border-bottom:1px solid #ddd}
+  th{background:#2e5e4e;color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Kalender Kegiatan Santri</h1>
+</header>
+
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th>Tanggal</th>
+        <th>Kegiatan</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody id="calendar-body">
+      <!-- Data kalender akan muncul di sini -->
+    </tbody>
+  </table>
+</main>
+
+<script>
+  // Contoh data kalender
+  const kalender = [
+    {tanggal:"2025-12-01", kegiatan:"Apel Pagi", waktu:"06:00 - 06:30"},
+    {tanggal:"2025-12-01", kegiatan:"Belajar Tahfidz", waktu:"07:00 - 08:30"},
+    {tanggal:"2025-12-02", kegiatan:"Shalat Jamaah", waktu:"05:00 - 05:30"}
+  ];
+
+  const tbody = document.getElementById("calendar-body");
+
+  kalender.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${item.tanggal}</td><td>${item.kegiatan}</td><td>${item.waktu}</td>`;
+    tbody.appendChild(tr);
+  });
+</script>
+
+</body>
+</html>
