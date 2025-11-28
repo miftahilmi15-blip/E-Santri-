@@ -124,17 +124,21 @@
 <main class="container">
 
   <!-- LOGIN -->
-  <section id="login-card" class="card">
+<section id="login-card">
+  <div class="card">
     <h2>Login / Daftar</h2>
+
+    <div id="msg" style="color:red; margin-bottom:8px;"></div>
 
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
 
-    <button class="btn primary" onclick="login()">Login</button>
-    <button class="btn secondary" onclick="register()">Daftar</button>
-
-    <p id="msg" style="color:red;margin-top:10px"></p>
-  </section>
+    <div class="row">
+      <button class="btn primary" onclick="login()">Login</button>
+      <button class="btn secondary" onclick="register()">Daftar</button>
+    </div>
+  </div>
+</section>
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="hidden">
