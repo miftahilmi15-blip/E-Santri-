@@ -153,8 +153,10 @@ const surah = [
   { no:113, name:"Al-Falaq", arti:"Fajar / Waktu Subuh", ayat:5},
   { no:114, name:"An-Nas", arti:"Manusia", ayat:6},
 ];
+<script>
+const tbody = document.getElementById("surah-list");
 
-  surah.forEach(s => {
+surah.forEach(s => {
   const tr = document.createElement("tr");
   tr.innerHTML = `<td>${s.no}</td><td class="surah-name" style="cursor:pointer;color:#2e5e4e">${s.name}</td><td>${s.arti}</td>`;
   tbody.appendChild(tr);
@@ -162,7 +164,7 @@ const surah = [
   tr.querySelector(".surah-name").addEventListener("click", () => {
     alert(`${s.name} memiliki ${s.ayat} ayat`);
   });
+});
 </script>
-
 </body>
 </html>
