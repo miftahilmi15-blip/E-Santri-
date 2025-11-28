@@ -3,92 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalender E-Santri</title>
+<title>Kalender Nasional</title>
 <style>
-  body {font-family: "Poppins", sans-serif; background: #f7f9fb; color: #333; margin:0; padding:0;}
-  header {background: #2e5e4e; color: #fff; padding: 15px; text-align:center;}
+  body {font-family: "Poppins", sans-serif; background:#f7f9fb; margin:0; padding:0;}
+  header {background:#2e5e4e; color:#fff; padding:15px; text-align:center;}
   h1 {margin:0;}
-  .calendar {display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 1000px; margin: 20px auto;}
+  .calendar {display:grid; grid-template-columns:repeat(7,1fr); gap:5px; max-width:1000px; margin:20px auto;}
   .day {background:#fff; border-radius:10px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.1); min-height:80px; position:relative;}
   .date {font-weight:600; margin-bottom:5px;}
-  .kegiatan {font-size:14px; margin-bottom:2px;}
-  .deskripsi {font-size:12px; color:#555;}
+  .holiday {background:#f8d7da; color:#721c24;}
   .today {border:2px solid #2e5e4e;}
+  .day-name {text-align:center; font-weight:600; padding:5px;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Kalender Kegiatan Santri</h1>
+  <h1>Kalender Nasional</h1>
 </header>
 
 <main>
-  <div id="calendar" class="calendar"></div>
+  <div class="calendar" id="calendar"></div>
 </main>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-  // ================= FIREBASE =================
-  const firebaseConfig = {
-    apiKey: "AIzaSyAQ1A9rtEoEYoriA5Y7oSB84Fd1Xnu6aes",
-    authDomain: "e-santri-ed555.firebaseapp.com",
-    projectId: "e-santri-ed555",
-    storageBucket: "e-santri-ed555.appspot.com",
-    messagingSenderId: "588687778472",
-    appId: "1:588687778472:web:3000ae9b18f1004ed2189d"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // ================= BUILD CALENDAR =================
   const calendarEl = document.getElementById("calendar");
 
-  // Tanggal saat ini
+  // Nama hari
+  const daysOfWeek = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  daysOfWeek.forEach(day => {
+    const el = document.createElement("div");
+    el.textContent = day;
+    el.classList.add("day-name");
+    calendarEl.appendChild(el);
+  });
+
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth();
+  const month = today.getMonth(); // 0-11
 
-  // Jumlah hari dalam bulan ini
+  const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Ambil data kalender dari Firestore
-  db.collection("kalender").get().then(snapshot => {
-    const events = {};
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      events[data.tanggal] = {judul: data.judul, deskripsi: data.deskripsi};
-    });
+  // Hari libur nasional contoh
+  const holidays = {
+    "2025-01-01": "Tahun Baru Masehi",
+    "2025-08-17": "Hari Kemerdekaan",
+    "2025-12-25": "Hari Natal"
+  };
 
-    // Render kalender
-    for(let day = 1; day <= daysInMonth; day++){
-      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-      const dayEl = document.createElement("div");
-      dayEl.classList.add("day");
-      if(dateStr === today.toISOString().slice(0,10)) dayEl.classList.add("today");
+  // Tambahkan kotak kosong sebelum tanggal 1 jika bukan hari Minggu
+  for(let i=0; i<firstDay; i++){
+    const empty = document.createElement("div");
+    empty.classList.add("day");
+    calendarEl.appendChild(empty);
+  }
 
-      const tanggalEl = document.createElement("div");
-      tanggalEl.classList.add("date");
-      tanggalEl.textContent = day;
+  // Tambahkan tanggal
+  for(let day=1; day<=daysInMonth; day++){
+    const dateObj = new Date(year, month, day);
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    
+    const dayEl = document.createElement("div");
+    dayEl.classList.add("day");
+    if(dateStr === today.toISOString().slice(0,10)) dayEl.classList.add("today");
+    if(holidays[dateStr]) dayEl.classList.add("holiday");
 
-      dayEl.appendChild(tanggalEl);
+    const dateNum = document.createElement("div");
+    dateNum.classList.add("date");
+    dateNum.textContent = day;
 
-      if(events[dateStr]){
-        const kegiatanEl = document.createElement("div");
-        kegiatanEl.classList.add("kegiatan");
-        kegiatanEl.textContent = events[dateStr].judul;
+    dayEl.appendChild(dateNum);
 
-        const deskripsiEl = document.createElement("div");
-        deskripsiEl.classList.add("deskripsi");
-        deskripsiEl.textContent = events[dateStr].deskripsi;
-
-        dayEl.appendChild(kegiatanEl);
-        dayEl.appendChild(deskripsiEl);
-      }
-
-      calendarEl.appendChild(dayEl);
+    // Tampilkan nama hari libur jika ada
+    if(holidays[dateStr]){
+      const holidayName = document.createElement("div");
+      holidayName.style.fontSize = "12px";
+      holidayName.style.color = "#721c24";
+      holidayName.textContent = holidays[dateStr];
+      dayEl.appendChild(holidayName);
     }
-  });
+
+    calendarEl.appendChild(dayEl);
+  }
 </script>
 
 </body>
