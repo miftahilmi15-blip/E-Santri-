@@ -154,12 +154,14 @@ const surah = [
   { no:114, name:"An-Nas", arti:"Manusia", ayat:6},
 ];
 
-  const tbody = document.getElementById("surah-list");
-surah.forEach(s => {  // <— sudah benar, karena array 'surah' sudah berisi 114 item
+  surah.forEach(s => {
   const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${s.no}</td><td>${s.name}</td><td>${s.arti}</td>`;
+  tr.innerHTML = `<td>${s.no}</td><td class="surah-name" style="cursor:pointer;color:#2e5e4e">${s.name}</td><td>${s.arti}</td>`;
   tbody.appendChild(tr);
-});
+
+  tr.querySelector(".surah-name").addEventListener("click", () => {
+    alert(`${s.name} memiliki ${s.ayat} ayat`);
+  });
 </script>
 
 </body>
