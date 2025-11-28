@@ -5,165 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Al-Quran E-Santri</title>
 <style>
-  body{font-family:"Poppins",sans-serif;background:#f7f9fb;margin:0;padding:0}
-  header{background:#2e5e4e;color:#fff;padding:15px;text-align:center}
-  h1{margin:0;font-size:24px}
-  main{max-width:800px;margin:20px auto;padding:0 15px}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-  th,td{padding:12px;text-align:left;border-bottom:1px solid #ddd}
-  th{background:#2e5e4e;color:#fff}
-  tr:hover{background:#f1f7f5}
+body{font-family:"Poppins",sans-serif;background:#f7f9fb;margin:0;padding:0}
+header{background:#2e5e4e;color:#fff;padding:15px;text-align:center}
+h1{margin:0;font-size:24px}
+main{max-width:800px;margin:20px auto;padding:0 15px}
+ul{list-style:none;padding:0}
+li{padding:12px;background:#fff;margin:5px 0;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+li:hover{background:#f1f7f5}
+
+/* Modal */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center}
+.modal-content{background:#fff;padding:20px;border-radius:10px;max-width:600px;width:90%;max-height:80%;overflow-y:auto;position:relative}
+.close{position:absolute;top:10px;right:15px;font-size:20px;cursor:pointer;color:#333}
+.ayat{margin:10px 0;padding:10px;background:#e6f2f0;border-radius:5px;line-height:1.5}
+.ayat-arab{font-family:"Scheherazade","Amiri",serif;text-align:right;font-size:18px;margin-bottom:5px}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Daftar Surah</h1>
+  <h1>Al-Quran E-Santri</h1>
 </header>
 
 <main>
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Surah</th>
-        <th>Arti</th>
-      </tr>
-    </thead>
-    <tbody id="surah-list">
-      <!-- Data surah akan muncul di sini -->
-    </tbody>
-  </table>
+  <ul id="surah-list"></ul>
 </main>
 
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
 <script>
-const surah = [
-  { no: 1, name:"Al-Fatihah", arti:"Pembukaan", ayat:7},
-  { no: 2, name:"Al-Baqarah", arti:"Sapi Betina", ayat:286},
-  { no: 3, name:"Ali 'Imran", arti:"Keluarga Imran", ayat:200},
-  { no: 4, name:"An-Nisa'", arti:"Wanita", ayat:176},
-  { no: 5, name:"Al-Ma'idah", arti:"Hidangan / Jamuan", ayat:120},
-  { no: 6, name:"Al-An'am", arti:"Binatang Ternak", ayat:165},
-  { no: 7, name:"Al-A'raf", arti:"Tempat Tertinggi", ayat:206},
-  { no: 8, name:"Al-Anfal", arti:"Rampasan Perang", ayat:75},
-  { no: 9, name:"At-Taubah", arti:"Pengampunan / Taubat", ayat:129},
-  { no:10, name:"Yunus", arti:"Nabi Yunus", ayat:109},
-  { no:11, name:"Hud", arti:"Nabi Hud", ayat:123},
-  { no:12, name:"Yusuf", arti:"Nabi Yusuf", ayat:111},
-  { no:13, name:"Ar-Ra'd", arti:"Petir / Guruh", ayat:43},
-  { no:14, name:"Ibrahim", arti:"Nabi Ibrahim", ayat:52},
-  { no:15, name:"Al-Hijr", arti:"Gunung Al‑Hijr / Tanah Terlarang", ayat:99},
-  { no:16, name:"An-Nahl", arti:"Lebah / Binatang Terbang", ayat:128},
-  { no:17, name:"Al-Isra'", arti:"Perjalanan Malam / Bani Israel", ayat:111},
-  { no:18, name:"Al-Kahf", arti:"Gua", ayat:110},
-  { no:19, name:"Maryam", arti:"Maryam", ayat:98},
-  { no:20, name:"Thaha", arti:"(Ta Ha) – Huruf Muqatta’ah", ayat:135},
-  { no:21, name:"Al-Anbiya'", arti:"Para Nabi", ayat:112},
-  { no:22, name:"Al-Hajj", arti:"Haji / Ibadah Haji", ayat:78},
-  { no:23, name:"Al-Mu'minun", arti:"Orang‑orang Mukmin", ayat:118},
-  { no:24, name:"An-Nur", arti:"Cahaya", ayat:64},
-  { no:25, name:"Al-Furqan", arti:"Pembeda (Hak & Bathil)", ayat:77},
-  { no:26, name:"Asy-Syu'ara'", arti:"Para Penyair", ayat:227},
-  { no:27, name:"An-Naml", arti:"Semut", ayat:93},
-  { no:28, name:"Al-Qasas", arti:"Kisah‑kisah", ayat:88},
-  { no:29, name:"Al-‘Ankabut", arti:"Laba-laba", ayat:69},
-  { no:30, name:"Ar‑Rum", arti:"Bangsa Romawi", ayat:60},
-  { no:31, name:"Luqman", arti:"Nabi Luqman", ayat:34},
-  { no:32, name:"As-Sajdah", arti:"Sujud", ayat:30},
-  { no:33, name:"Al-Ahzab", arti:"Sekutu / Kumpulan", ayat:73},
-  { no:34, name:"Saba'", arti:"Saba'", ayat:54},
-  { no:35, name:"Fatir", arti:"Pencipta / Malaikat", ayat:45},
-  { no:36, name:"Ya-Sin", arti:"(Huruf Muqatta’ah)", ayat:83},
-  { no:37, name:"As-Saffat", arti:"Barisan Malaikat", ayat:182},
-  { no:38, name:"Sad", arti:"Sad – Huruf Muqatta’ah", ayat:88},
-  { no:39, name:"Az-Zumar", arti:"Rombongan / Golongan", ayat:75},
-  { no:40, name:"Ghafir", arti:"Maha Pengampun", ayat:85},
-  { no:41, name:"Fussilat", arti:"Yang Diperinci", ayat:54},
-  { no:42, name:"Asy-Syura", arti:"Musyawarah", ayat:53},
-  { no:43, name:"Az-Zukhruf", arti:"Perhiasan", ayat:89},
-  { no:44, name:"Ad-Dukhan", arti:"Asap", ayat:59},
-  { no:45, name:"Al-Jathiyah", arti:"Berlutut / Bersujud", ayat:37},
-  { no:46, name:"Al-Ahqaf", arti:"Bukit Pasir / Lembah", ayat:35},
-  { no:47, name:"Muhammad", arti:"Nabi Muhammad", ayat:38},
-  { no:48, name:"Al-Fath", arti:"Kemenangan", ayat:29},
-  { no:49, name:"Al-Hujurat", arti:"Kamar / Ruang", ayat:18},
-  { no:50, name:"Qaf", arti:"Qaf – Huruf Muqatta’ah", ayat:45},
-  { no:51, name:"Adz-Dzariyat", arti:"Angin yang Menerbangkan", ayat:60},
-  { no:52, name:"At-Tur", arti:"Gunung", ayat:49},
-  { no:53, name:"An-Najm", arti:"Bintang", ayat:62},
-  { no:54, name:"Al-Qamar", arti:"Bulan", ayat:55},
-  { no:55, name:"Ar-Rahman", arti:"Maha Pemurah", ayat:78},
-  { no:56, name:"Al-Waqi'ah", arti:"Hari Kiamat", ayat:96},
-  { no:57, name:"Al-Hadid", arti:"Besi", ayat:29},
-  { no:58, name:"Al-Mujadilah", arti:"Wanita yang Membantah", ayat:22},
-  { no:59, name:"Al-Hasyr", arti:"Pengusiran", ayat:24},
-  { no:60, name:"Al-Mumtahanah", arti:"Wanita yang Diuji", ayat:13},
-  { no:61, name:"As-Saff", arti:"Barisan", ayat:14},
-  { no:62, name:"Al-Jumu'ah", arti:"Jum’at", ayat:11},
-  { no:63, name:"Al-Munafiqun", arti:"Orang Munafik", ayat:11},
-  { no:64, name:"At-Taghabun", arti:"Saling Menipu", ayat:18},
-  { no:65, name:"At-Talaq", arti:"Talak", ayat:12},
-  { no:66, name:"At-Tahrim", arti:"Mengharamkan", ayat:12},
-  { no:67, name:"Al-Mulk", arti:"Kerajaan / Kekuasaan", ayat:30},
-  { no:68, name:"Al-Qalam", arti:"Pena", ayat:52},
-  { no:69, name:"Al-Haqqah", arti:"Hari Kiamat", ayat:52},
-  { no:70, name:"Al-Ma'arij", arti:"Tempat Naik", ayat:44},
-  { no:71, name:"Nuh", arti:"Nabi Nuh", ayat:28},
-  { no:72, name:"Al-Jinn", arti:"Jin", ayat:28},
-  { no:73, name:"Al-Muzzammil", arti:"Yang Berselimut", ayat:20},
-  { no:74, name:"Al-Muddaththir", arti:"Yang Berselimut", ayat:56},
-  { no:75, name:"Al-Qiyamah", arti:"Hari Kiamat", ayat:40},
-  { no:76, name:"Al-Insan", arti:"Manusia", ayat:31},
-  { no:77, name:"Al-Mursalat", arti:"Yang Diutus", ayat:50},
-  { no:78, name:"An-Naba'", arti:"Berita Besar", ayat:40},
-  { no:79, name:"An-Nazi'at", arti:"Malaikat Pencabut Nyawa", ayat:46},
-  { no:80, name:"Abasa", arti:"Bermuka Masam", ayat:42},
-  { no:81, name:"At-Takwir", arti:"Menggulung / Gelap", ayat:29},
-  { no:82, name:"Al-Infitar", arti:"Terbelah", ayat:19},
-  { no:83, name:"Al-Mutaffifin", arti:"Orang Curang", ayat:36},
-  { no:84, name:"Al-Insyiqaq", arti:"Terbelah / Terbuka", ayat:25},
-  { no:85, name:"Al-Buruj", arti:"Gugusan Bintang", ayat:22},
-  { no:86, name:"At-Tariq", arti:"Yang Datang di Malam Hari", ayat:17},
-  { no:87, name:"Al-A'la", arti:"Yang Maha Tinggi", ayat:19},
-  { no:88, name:"Al-Gasyiyah", arti:"Hari Kiamat / Musibah", ayat:26},
-  { no:89, name:"Al-Fajr", arti:"Fajar / Subuh", ayat:30},
-  { no:90, name:"Al-Balad", arti:"Negeri / Kota", ayat:20},
-  { no:91, name:"Asy-Syams", arti:"Matahari", ayat:15},
-  { no:92, name:"Al-Lail", arti:"Malam", ayat:21},
-  { no:93, name:"Ad-Dhuha", arti:"Pagi / Cahaya", ayat:11},
-  { no:94, name:"Asy-Syarh", arti:"Melapangkan / Membuka", ayat:8},
-  { no:95, name:"At-Tin", arti:"Buah Tin", ayat:8},
-  { no:96, name:"Al-'Alaq", arti:"Segumpal Darah / Segumpal Mani", ayat:19},
-  { no:97, name:"Al-Qadr", arti:"Kemuliaan / Malam Lailatul Qadar", ayat:5},
-  { no:98, name:"Al-Bayyinah", arti:"Bukti Nyata", ayat:8},
-  { no:99, name:"Az-Zalzalah", arti:"Guncangan", ayat:8},
-  { no:100, name:"Al-'Adiyat", arti:"Kuda Perang", ayat:11},
-  { no:101, name:"Al-Qari'ah", arti:"Hari Kiamat", ayat:11},
-  { no:102, name:"At-Takasur", arti:"Bersaing dalam Banyak Harta", ayat:8},
-  { no:103, name:"Al-'Asr", arti:"Waktu / Masa", ayat:3},
-  { no:104, name:"Al-Humazah", arti:"Pengumpat / Penghujat", ayat:9},
-  { no:105, name:"Al-Fil", arti:"Gajah", ayat:5},
-  { no:106, name:"Quraisy", arti:"Suku Quraisy", ayat:4},
-  { no:107, name:"Al-Ma'un", arti:"Bantuan Kecil", ayat:7},
-  { no:108, name:"Al-Kautsar", arti:"Nikmat yang Berlimpah", ayat:3},
-  { no:109, name:"Al-Kafirun", arti:"Orang Kafir / Penolak", ayat:6},
-  { no:110, name:"An-Nasr", arti:"Pertolongan", ayat:3},
-  { no:111, name:"Al-Lahab", arti:"Abu / Api", ayat:5},
-  { no:112, name:"Al-Ikhlas", arti:"Kemurnian / Keikhlasan", ayat:4},
-  { no:113, name:"Al-Falaq", arti:"Fajar / Waktu Subuh", ayat:5},
-  { no:114, name:"An-Nas", arti:"Manusia", ayat:6},
-];
-const tbody = document.getElementById("surah-list");
+const surahList = document.getElementById('surah-list');
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+const closeBtn = document.querySelector('.close');
 
-surah.forEach(s => {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${s.no}</td><td class="surah-name" style="cursor:pointer;color:#2e5e4e">${s.name}</td><td>${s.arti}</td>`;
-  tbody.appendChild(tr);
+closeBtn.onclick = () => modal.style.display = 'none';
+window.onclick = e => { if(e.target === modal) modal.style.display = 'none'; }
 
-  tr.querySelector(".surah-name").addEventListener("click", () => {
-    alert(`${s.name} memiliki ${s.ayat} ayat`);
+async function getSurahList() {
+  const res = await fetch('https://api.alquran.cloud/v1/surah');
+  const data = await res.json();
+  data.data.forEach(s => {
+    const li = document.createElement('li');
+    li.textContent = `${s.number}. ${s.englishName} (${s.name}) - ${s.numberOfAyahs} ayat`;
+    li.addEventListener('click', () => showAyat(s.number, s.englishName));
+    surahList.appendChild(li);
   });
-});
+}
+
+async function showAyat(no, name) {
+  modalTitle.textContent = `Surah ${name}`;
+  modalBody.innerHTML = 'Loading...';
+  modal.style.display = 'flex';
+
+  const res = await fetch(`https://api.alquran.cloud/v1/surah/${no}`);
+  const arRes = await res.json();
+  
+  const resId = await fetch(`https://api.alquran.cloud/v1/surah/${no}/id.indonesian`);
+  const idRes = await resId.json();
+
+  modalBody.innerHTML = '';  
+  arRes.data.ayahs.forEach((ayat, i) => {
+    const div = document.createElement('div');
+    div.className = 'ayat';
+    div.innerHTML = `<div class="ayat-arab">${ayat.text}</div>
+                     <div class="ayat-id">${idRes.data.ayahs[i].text}</div>`;
+    modalBody.appendChild(div);
+  });
+}
+
+getSurahList();
 </script>
+
 </body>
 </html>
